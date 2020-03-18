@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 import { AppLoading } from 'expo';
-import { Container, Item, Content, Input, Button, Label, Text } from "native-base";
 import * as Font from 'expo-font';
+import { NativeRouter, Route } from 'react-router-native';
 import { Ionicons } from '@expo/vector-icons';
-import { usersDb } from './db/firebase-init';
-import { signUp } from './db/auth';
+import { Loading, Login, Home } from "./screens";
+import { UserStoreProvider } from './store/user-store';
+import { PrivateLayout } from "./layouts";
 
 export default function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
@@ -28,49 +26,19 @@ export default function App() {
     return <AppLoading />
   }
 
-  const handleSignUp = async () => {
-    try {
-      const response = await signUp({email, password})
-      console.log('response',response)
-      usersDb.doc(response.user.uid).set({
-        uid: response.user.uid,
-        email: email,
-        role: 'user',
-      })
-    } catch(err) {
-      console.log('errror',err)
-    }
-  }
-
   return (
-    <Container>
-      <Content>
-        <Item floatingLabel>
-          <Label>Email</Label>
-          <Input onChangeText={setEmail} value={email} autoCapitalize="none" autoCorrect={false}  />
-        </Item>
-        <Item floatingLabel>
-          <Label>Password</Label>
-          <Input
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={true}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </Item>
-        <Container style={styles.form}>
-          <Button full rounded success>
-            <Text>Login</Text>
-          </Button>
-          <TouchableHighlight>
-            <Button full rounded success style={{ marginTop: 20 }} onPress={handleSignUp}>
-              <Text>Sign up</Text>
-            </Button>
-          </TouchableHighlight>
-        </Container>
-      </Content>
-    </Container>
+    <NativeRouter>
+      <UserStoreProvider>
+        <Route exact path="/" component={Loading} />
+        <Route path="/home">
+          <PrivateLayout>
+            <Home/>
+          </PrivateLayout>
+        </Route>
+        <Route path="/login" component={Login} />
+        {/*<Route path="/sign_up" component={SignUp} />*/}
+      </UserStoreProvider>
+    </NativeRouter>
   );
 }
 
