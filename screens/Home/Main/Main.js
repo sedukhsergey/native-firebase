@@ -22,15 +22,6 @@ const Main = ({ history }) => {
 	  .catch(function(error) {
 		console.error("Error adding document: ", error);
 	  });
-	// if (state.user.uid) {
-	//   usersDb.get()
-	// 	.then(data => {
-	// 	  console.log('data',data)
-	// 	})
-	// 	.catch(err => {
-	// 	  console.log('err',err)
-	// 	})
-	// }
   }
   return (
 	<ScrollView style={styles.container}>
@@ -43,16 +34,9 @@ const Main = ({ history }) => {
 			autoCorrect={false}
 		  />
 		</Item>
-	  <TouchableHighlight style={styles.form}>
 		<Button full rounded success onPress={handleChangeName}>
 		  <Text>Change user </Text>
 		</Button>
-	  </TouchableHighlight>
-	  <TouchableHighlight style={styles.form}>
-		<Button full rounded success onPress={() => history.push('/home')}>
-		  <Text>Redirect to Home</Text>
-		</Button>
-	  </TouchableHighlight>
 	</ScrollView>
   )
 }

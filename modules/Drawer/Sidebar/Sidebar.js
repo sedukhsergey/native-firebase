@@ -5,30 +5,18 @@ import { withRouter, Route } from 'react-router-native'
 import { Container, Content, List, ListItem, Text, Left, Right, Icon } from 'native-base'
 import app from 'firebase/app'
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import { textSecondary, secondary, primary } from '../../../theme/colors'
 const routesList = [
   {
     id: 1,
     title: 'Main',
-    route: '/main/home',
+    route: '/home/main',
     renderIcon: color => <MaterialIcons size={20} name="home" color={color} />,
-  },
-  {
-    id: 2,
-    title: 'Read',
-    route: '/main/read',
-    renderIcon: color => <MaterialIcons size={20} name="forward" color={color} />,
-  },
-  {
-    id: 4,
-    title: 'Review',
-    route: '/main/review',
-    renderIcon: color => <MaterialIcons size={20} name="forward" color={color} />,
   },
   {
     id: 5,
     title: 'Profile',
-    route: '/main/profile',
+    route: '/home/profile',
     renderIcon: color => <MaterialIcons size={20} name="pencil" color={color} />,
   },
 ]
@@ -62,12 +50,12 @@ const Sidebar = ({ history, handleCloseDrawer }) => {
     <Container style={styles.container}>
       <Content>
         <List>
-          <ListItem onPress={logOutHandler}>
-            <Left>
-              <Text>Log Out</Text>
+          <ListItem onPress={logOutHandler} style={styles.listItem}>
+            <Left >
+              <Text style={styles.primary}>Log Out</Text>
             </Left>
             <Right>
-              <MaterialIcons name="logout" size={20} />
+              <MaterialIcons name="logout" size={20} color={primary}/>
             </Right>
           </ListItem>
           {routesList.map(item => (
@@ -78,13 +66,13 @@ const Sidebar = ({ history, handleCloseDrawer }) => {
                 history.push(item.route)
                 handleCloseDrawer()
               }}
-              style={item.id === activeRoute && styles.activeItem}
+              style={item.id === activeRoute ? styles.activeItem : styles.listItem}
             >
               <Left>
                 <Text style={item.id === activeRoute ? styles.activeItemText : styles.primary}>{item.title}</Text>
               </Left>
               <Right>
-                {item.renderIcon(item.id === activeRoute ? styles.activeItemText : styles.primary)}
+                {item.renderIcon(item.id === activeRoute ? secondary : primary)}
               </Right>
             </ListItem>
           ))}
@@ -96,17 +84,22 @@ const Sidebar = ({ history, handleCloseDrawer }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
+    paddingTop: 20,
+    backgroundColor: 'white',
   },
   activeItem: {
-    borderBottomColor: 'red',
+    borderBottomColor: secondary,
+    borderBottomWidth: 1,
+  },
+  listItem: {
+    borderBottomColor: primary,
     borderBottomWidth: 1,
   },
   activeItemText: {
-    color: 'red',
+    color: secondary,
   },
   primary: {
-    color: 'blue',
+    color: primary,
   },
 })
 

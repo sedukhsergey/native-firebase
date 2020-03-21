@@ -1,19 +1,20 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { H3 } from 'native-base'
-import { primaryDark } from '../../theme/colors'
+import { primaryDark } from '../../../theme/colors'
 
-const Header = () => {
+const PublicFooter = () => {
   return (
     <View style={styles.container}>
-      <H3 style={styles.title}>HEADER</H3>
+      <H3 style={styles.title}>FOOTER</H3>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 60,
     backgroundColor: primaryDark,
   },
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Header
+export default PublicFooter

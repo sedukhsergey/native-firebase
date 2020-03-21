@@ -7,8 +7,6 @@ import { usersDb } from '../../db/firebase-init'
 import { UserStore } from '../../store/user-store'
 import Main from './Main'
 import { Drawer } from '../../modules';
-import Header from "../../modules/Header"
-import Footer from "../../modules/Footer"
 
 
 function Home({ history }) {
@@ -51,11 +49,7 @@ function Home({ history }) {
 
   return (
     <Container>
-      <Drawer ref={drawerRef}>
-        <Header/>
-         <Route path="/home/main" component={Main} />
-        <Footer/>
-      </Drawer>
+       <Route path="/home/main" component={Main} />
     </Container>
   )
 }

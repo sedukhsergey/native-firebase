@@ -1,17 +1,17 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import { Container } from "native-base"
-import { Header, Footer } from '../../modules';
+import { PublicHeader, PublicFooter } from '../../modules';
 
 const PublicLayout = (props) => {
   return (
     <View style={styles.layout}>
       <View style={styles.container}>
           <View style={styles.main}>
-            <Header/>
+            <PublicHeader/>
               {React.cloneElement(props.children, props)}
           </View>
-        <Footer/>
+        <PublicFooter/>
       </View>
     </View>
   )
