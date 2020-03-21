@@ -4,9 +4,9 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { NativeRouter, Route } from 'react-router-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Loading, Login, Home } from "./screens";
+import { Loading, Login, Home, SignUp } from "./screens";
 import { UserStoreProvider } from './store/user-store';
-import { PrivateLayout } from "./layouts";
+import { PrivateLayout, PublicLayout } from "./layouts";
 
 export default function App() {
 
@@ -30,13 +30,21 @@ export default function App() {
     <NativeRouter>
       <UserStoreProvider>
         <Route exact path="/" component={Loading} />
-        <Route path="/home">
+        <Route path="/home/main">
           <PrivateLayout>
             <Home/>
           </PrivateLayout>
         </Route>
-        <Route path="/login" component={Login} />
-        {/*<Route path="/sign_up" component={SignUp} />*/}
+          <Route path="/login">
+            <PublicLayout>
+              <Login />
+            </PublicLayout>
+          </Route>
+        <Route path="/sign-up">
+          <PublicLayout>
+            <SignUp/>
+          </PublicLayout>
+        </Route>
       </UserStoreProvider>
     </NativeRouter>
   );

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, TouchableHighlight } from 'react-native'
-import { Button, Container, Content, Input, Item, Label, Text } from 'native-base'
-import { signUp } from '../../db/auth'
+import { Keyboard, KeyboardAvoidingView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { Container, Item, Input, Button, Label, Text, H3, Card, H2, CardItem, Body } from 'native-base'
 import { usersDb } from '../../db/firebase-init'
+import { signUp } from '../../db/auth'
+import { withRouter } from 'react-router-native'
+import { secondary, textSecondary, textPrimary } from '../../theme/colors'
 
 const SignUp = ({ history }) => {
   const [email, setEmail] = useState('')
@@ -17,47 +19,87 @@ const SignUp = ({ history }) => {
             uid: data.user.uid,
             email: email,
             role: 'user',
-            name: '',
           })
           history.push('/main/home')
         })
         .catch(err => {
-          console.log('SignUp error', err)
+          setError(err.message)
         })
     } catch (err) {
-      console.log('errror', err)
+      setError(err.message)
     }
   }
 
+  const handleLoginRedirect = () => {
+    history.push('/login')
+  }
+
   return (
-    <Container>
-      <Content>
-        <Item floatingLabel>
-          <Label>Email</Label>
-          <Input onChangeText={setEmail} value={email} autoCapitalize="none" autoCorrect={false} />
-        </Item>
-        <Item floatingLabel>
-          <Label>Password</Label>
-          <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
-        </Item>
-        <Container style={styles.form}>
-          <TouchableHighlight>
-            <Button full rounded success style={{ marginTop: 20 }} onPress={handleSignUp}>
-              <Text>Sign up</Text>
-            </Button>
-          </TouchableHighlight>
-        </Container>
-      </Content>
-    </Container>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss()
+      }}
+    >
+      <Container style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" enabled>
+          <Card style={styles.registerLinkContainer}>
+            <CardItem>
+              <Body style={styles.body}>
+                <Item floatingLabel>
+                  <Label>Email</Label>
+                  <Input onChangeText={setEmail} value={email} autoCapitalize="none" autoCorrect={false} />
+                </Item>
+                <Item floatingLabel style={styles.mb20}>
+                  <Label>Password</Label>
+                  <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
+                </Item>
+                {error ? <Text style={styles.error}>{error}</Text> : null}
+                <Button full rounded success style={styles.mb20} onPress={handleSignUp}>
+                  <Text>SignUp</Text>
+                </Button>
+                <H3 style={styles.title}>Has account already?</H3>
+                <H2 style={styles.loginLink} onPress={handleLoginRedirect}>
+                  Go to Login
+                </H2>
+              </Body>
+            </CardItem>
+          </Card>
+        </KeyboardAvoidingView>
+      </Container>
+    </TouchableWithoutFeedback>
   )
 }
 
 const styles = StyleSheet.create({
-  form: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
+  error: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 20,
+  },
+  container: {
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  mb20: {
+    marginBottom: 20,
+  },
+  body: {
+    alignItems: 'center',
+  },
+  registerLinkContainer: {
+    alignItems: 'center',
+    marginRight: 20,
+    marginLeft: 20,
+  },
+  title: {
+    textAlign: 'center',
+    color: textSecondary,
+    marginBottom: 10,
+  },
+  loginLink: {
+    fontSize: 22,
+    color: secondary,
   },
 })
 
-export default SignUp
+export default withRouter(SignUp)
