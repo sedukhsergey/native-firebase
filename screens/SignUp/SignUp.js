@@ -5,13 +5,16 @@ import { usersDb } from '../../db/firebase-init'
 import { signUp } from '../../db/auth'
 import { withRouter } from 'react-router-native'
 import { secondary, textSecondary, textPrimary } from '../../theme/colors'
+import {Spinner} from "../../modules"
 
 const SignUp = ({ history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = () => {
+    setIsLoading(true)
     try {
       signUp({ email, password })
         .then(data => {
@@ -20,12 +23,15 @@ const SignUp = ({ history }) => {
             email: email,
             role: 'user',
           })
+          setIsLoading(false)
           history.push('/main/home')
         })
         .catch(err => {
           setError(err.message)
+          setIsLoading(false)
         })
     } catch (err) {
+      setIsLoading(false)
       setError(err.message)
     }
   }
@@ -35,38 +41,41 @@ const SignUp = ({ history }) => {
   }
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss()
-      }}
-    >
-      <Container style={styles.container}>
-        <KeyboardAvoidingView behavior="padding" enabled>
-          <Card style={styles.registerLinkContainer}>
-            <CardItem>
-              <Body style={styles.body}>
-                <Item floatingLabel>
-                  <Label>Email</Label>
-                  <Input onChangeText={setEmail} value={email} autoCapitalize="none" autoCorrect={false} />
-                </Item>
-                <Item floatingLabel style={styles.mb20}>
-                  <Label>Password</Label>
-                  <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
-                </Item>
-                {error ? <Text style={styles.error}>{error}</Text> : null}
-                <Button full rounded success style={styles.mb20} onPress={handleSignUp}>
-                  <Text>SignUp</Text>
-                </Button>
-                <H3 style={styles.title}>Has account already?</H3>
-                <H2 style={styles.loginLink} onPress={handleLoginRedirect}>
-                  Go to Login
-                </H2>
-              </Body>
-            </CardItem>
-          </Card>
-        </KeyboardAvoidingView>
-      </Container>
-    </TouchableWithoutFeedback>
+     <>
+       <TouchableWithoutFeedback
+         onPress={() => {
+           Keyboard.dismiss()
+         }}
+       >
+         <Container style={styles.container}>
+           <KeyboardAvoidingView behavior="padding" enabled>
+             <Card style={styles.registerLinkContainer}>
+               <CardItem>
+                 <Body style={styles.body}>
+                   <Item floatingLabel>
+                     <Label>Email</Label>
+                     <Input onChangeText={setEmail} value={email} autoCapitalize="none" autoCorrect={false} />
+                   </Item>
+                   <Item floatingLabel style={styles.mb20}>
+                     <Label>Password</Label>
+                     <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
+                   </Item>
+                   {error ? <Text style={styles.error}>{error}</Text> : null}
+                   <Button full rounded success style={styles.mb20} onPress={handleSignUp}>
+                     <Text>SignUp</Text>
+                   </Button>
+                   <H3 style={styles.title}>Has account already?</H3>
+                   <H2 style={styles.loginLink} onPress={handleLoginRedirect}>
+                     Go to Login
+                   </H2>
+                 </Body>
+               </CardItem>
+             </Card>
+           </KeyboardAvoidingView>
+         </Container>
+       </TouchableWithoutFeedback>
+       <Spinner isLoading={isLoading} />
+     </>
   )
 }
 

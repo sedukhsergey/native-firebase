@@ -30,7 +30,7 @@ export default function App() {
     <NativeRouter>
       <UserStoreProvider>
         <Route exact path="/" component={Loading} />
-        <Route path="/home/main">
+        <Route path="/home">
           <PrivateLayout>
             <Home/>
           </PrivateLayout>

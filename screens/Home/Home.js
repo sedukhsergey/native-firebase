@@ -1,55 +1,14 @@
-import React, { useEffect, useContext, useRef } from 'react'
-import { StyleSheet } from 'react-native'
-import { Container, Text, Button } from 'native-base'
-import { Route, Redirect } from 'react-router-native'
-import app from 'firebase/app'
-import { usersDb } from '../../db/firebase-init'
-import { UserStore } from '../../store/user-store'
-import Main from './Main'
-import { Drawer } from '../../modules';
+import React from 'react'
+import { Container } from 'native-base'
+import { Route } from 'react-router-native'
+import { Main, Profile } from '../../screens'
 
 
-function Home({ history }) {
-  const { state } = useContext(UserStore)
-  useEffect(() => {
-    if (state.user.uid) {
-      console.log('Home state.user.uid', state.user.uid)
-      const docUser = usersDb.doc(state.user.uid)
-      docUser
-        .get()
-        .then(user => {
-          console.log('user', user)
-        })
-        .catch(err => {
-          console.log('user err', err)
-        })
-    }
-  }, [])
-
-  const logOutHandler = () => {
-    app
-      .auth()
-      .signOut()
-      .then(
-        () => {
-          history.push('/login')
-        },
-        error => {
-          console.error('Sign Out Error', error)
-        }
-      )
-  }
-
-  const drawerRef = useRef(null)
-  const handleOpenDrawer = () => {
-    if (drawerRef.current) {
-      drawerRef.current._root.open()
-    }
-  }
-
+function Home() {
   return (
     <Container>
        <Route path="/home/main" component={Main} />
+       <Route path="/home/profile" component={Profile} />
     </Container>
   )
 }
