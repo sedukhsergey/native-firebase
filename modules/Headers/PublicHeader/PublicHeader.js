@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { H3 } from 'native-base'
-import { primaryDark } from '../../../theme/colors'
+import { primaryDark, } from '../../../theme/colors'
 
 const PublicHeader = () => {
   return (

@@ -3,7 +3,7 @@ import { StyleSheet, View, KeyboardAvoidingView, ScrollView, TouchableWithoutFee
 import { Container, Item, Input, Button, Label, Text, H3, Card, H2, CardItem, Body } from 'native-base'
 import { withRouter } from 'react-router-native'
 import { signIn } from '../../db/auth'
-import { secondary, textSecondary, textPrimary } from '../../theme/colors'
+import { secondary, textSecondary, textPrimary, primary } from '../../theme/colors'
 import { Spinner } from '../../modules'
 
 const Login = ({ history }) => {
@@ -44,7 +44,7 @@ const Login = ({ history }) => {
                   <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
                 </Item>
                 {error ? <Text style={styles.error}>{error}</Text> : null}
-                <Button full rounded success style={styles.mb20} onPress={handleSignIn}>
+                <Button full rounded style={[styles.mb20, styles.button]} onPress={handleSignIn}>
                   <Text>Login</Text>
                 </Button>
                 <H3 style={styles.title}>Hasn't account yet?</H3>
@@ -63,6 +63,9 @@ const Login = ({ history }) => {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: primary,
+  },
   error: {
     color: 'red',
     fontSize: 14,

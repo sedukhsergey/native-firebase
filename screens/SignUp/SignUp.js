@@ -4,7 +4,7 @@ import { Container, Item, Input, Button, Label, Text, H3, Card, H2, CardItem, Bo
 import { usersDb } from '../../db/firebase-init'
 import { signUp } from '../../db/auth'
 import { withRouter } from 'react-router-native'
-import { secondary, textSecondary, textPrimary } from '../../theme/colors'
+import { secondary, textSecondary, textPrimary, primary } from '../../theme/colors'
 import {Spinner} from "../../modules"
 
 const SignUp = ({ history }) => {
@@ -18,7 +18,8 @@ const SignUp = ({ history }) => {
     try {
       signUp({ email, password })
         .then(data => {
-          usersDb.doc(data.user.uid).set({
+          usersDb.doc(data.user.uid)
+            .set({
             uid: data.user.uid,
             email: email,
             role: 'user',
@@ -61,7 +62,7 @@ const SignUp = ({ history }) => {
                      <Input value={password} onChangeText={setPassword} secureTextEntry={true} autoCapitalize="none" autoCorrect={false} />
                    </Item>
                    {error ? <Text style={styles.error}>{error}</Text> : null}
-                   <Button full rounded success style={styles.mb20} onPress={handleSignUp}>
+                   <Button full rounded style={[styles.mb20, styles.button]} onPress={handleSignUp}>
                      <Text>SignUp</Text>
                    </Button>
                    <H3 style={styles.title}>Has account already?</H3>
@@ -80,6 +81,9 @@ const SignUp = ({ history }) => {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: primary,
+  },
   error: {
     color: 'red',
     fontSize: 14,

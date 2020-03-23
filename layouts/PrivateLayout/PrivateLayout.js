@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import {StyleSheet, View} from "react-native"
 import { withRouter } from 'react-router-native';
 import app from "firebase/app";
@@ -7,10 +7,12 @@ import {Drawer, PublicFooter, PrivateHeader} from "../../modules"
 
 
 const PrivateLayout = ({history, children}) => {
+  const [isReady, setIsReady] = useState(false);
   const { dispatch } = useContext(UserStore);
   useEffect(() => {
 	const { currentUser } = app.auth()
 	if (!currentUser) history.push('/login')
+    setIsReady(true);
 	dispatch({type: 'SET_USER', payload: currentUser })
   },[])
 
@@ -20,6 +22,8 @@ const PrivateLayout = ({history, children}) => {
       drawerRef.current._root.open()
     }
   }
+
+  if (!isReady) return null;
 
   return (
     <>
